@@ -1,5 +1,5 @@
-import requests
-import urllib.parse
+import pip._vendor.requests as requests
+from urllib import parse
 import re
 import json
 import csv
@@ -27,7 +27,7 @@ def find_borough(inputStraßeHausnummer,inputPlzOrt):
     ort = inputPlzOrt.split()[1]
 
     params = {'name': straße, 'postalCode': plz, 'locality': ort}
-    url = "https://openplzapi.org/de/Streets?" + urllib.parse.urlencode(params)
+    url = "https://openplzapi.org/de/Streets?" + parse.urlencode(params)
 
 
     response = requests.get(url).json()
@@ -61,9 +61,11 @@ def main(input_datei, output_datei):
 
 
 #Skript wird ausgeführt
-mitgliederliste = glob.glob('*.csv')
-for item in mitgliederliste:
-    print(item + ' wird eingelesen und verarbeitet!')
-    outputdatei = item.replace('.csv','_mitOrtsteil.csv')
-    main(item, outputdatei)
-print('FERTIG!')
+try:
+    mitgliederliste = glob.glob('*.csv')
+    for item in mitgliederliste:
+        print(item + ' wird eingelesen und verarbeitet!')
+        outputdatei = item.replace('.csv','_mitOrtsteil.csv')
+        main(item, outputdatei)
+except Exception as e: 
+    print (f"{type(e).__name__} at line {e.__traceback__.tb_lineno} of {__file__}: {e}")     
