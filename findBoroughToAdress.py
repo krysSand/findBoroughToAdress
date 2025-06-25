@@ -67,3 +67,4 @@ for item in mitgliederliste:
     outputdatei = item.replace('.csv','_mitOrtsteil.csv')
     main(item, outputdatei)
 print('FERTIG!')
+input('Press ENTER to quit ...')
