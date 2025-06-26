@@ -41,6 +41,14 @@ def find_borough(inputStraßeHausnummer,inputPlzOrt):
     for item in response:
        return item.get('borough')
     
+#Function um zu prüfen, ob benötigte Felder zur Stadtteilbestimmung vorhanden sind
+def input_accaptable(inputStraßeHausnummer,inputPlzOrt):
+    if len(inputStraßeHausnummer.strip()) == 0 or len(inputPlzOrt.strip()) == 0:
+        return False
+    if "null" in inputStraßeHausnummer or "null" in inputPlzOrt:
+        return False
+    return True     
+    
 
 #main-function: liest daten aus csv, sucht Ortsteil und schreibt Ergebnis in eine eigene Liste
 def main(input_datei, output_datei): 
@@ -51,8 +59,11 @@ def main(input_datei, output_datei):
             if row[6] == 'strasse_nr':
                header = row
             else:
-                row_with_borough = [row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],find_borough(row[6],row[7])]
-                data_list.append(row_with_borough)
+                if input_accaptable(row[6],row[7]):
+                    row_with_borough = [row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],find_borough(row[6],row[7])]
+                else: 
+                    row_with_borough = [row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],"null"]
+                data_list.append(row_with_borough)    
 
     with open(output_datei, 'w', newline='') as f:
         writer = csv.writer(f, delimiter=';',quoting=csv.QUOTE_MINIMAL)
@@ -67,4 +78,3 @@ for item in mitgliederliste:
     outputdatei = item.replace('.csv','_mitOrtsteil.csv')
     main(item, outputdatei)
 print('FERTIG!')
-input('Press ENTER to quit ...')
