@@ -21,6 +21,5 @@ the streetname is readjusted before it can be used in the Api. The housenumber (
 Inline comments are in german.  
 
 ## Planned Extensions
-- choose csv file with GUI
 - inout csv does not have to confirm to strict format
 - general performance enhancments
